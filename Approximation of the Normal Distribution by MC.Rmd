@@ -1,0 +1,53 @@
+---
+title: "03 Approximation of the Normal Distribution by MC"
+author: "Cheng huiqi"
+date: "2020/3/26"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+# Abstract
+This report get the approximation of the normal distribution by the Monte Carlo methods.
+
+
+# Introduction
+In this report,I Consider approximation of the distribution function of
+$N(0, 1)$,I list the equations about the method,produce the table and boxplot
+
+
+# Math Equations
+In this report,I Consider approximation of the distribution function of
+$N(0, 1)$,$\Phi(t) = \int_{-\infty}^t \frac{1}{\sqrt{2\pi}} e^{-y^2 / 2} d y$,by the Monte Carlo methods:$\hat\Phi(t) = \frac{1}{n} \sum_{i=1}^n I(X_i \le t)$,where $X_i$'s are a random sample from $N(0, 1)$, and $I(\cdot)$ is
+the indicator function.
+
+# Table
+I use these codes to creat the table
+
+```{r }
+t=c(0,0.67,0.84,1.28,1.65,2.32,2.58,3.09,3.72)
+n=c(100,1000,10000)
+p=matrix(0,nrow=9,ncol=3)
+a=0
+for (i in 1:9)
+  for (j in 1:3){
+    a=a+1
+    num=rnorm(n[j],0,1)
+    p[i,j]=mean(num<t[i])
+    print(a)
+  }
+rownames(p)<-t
+colnames(p)<-n
+true_value<-c(pnorm(0),pnorm(0.67),pnorm(0.84),pnorm(1.28),pnorm(1.65),pnorm(2.32),pnorm(2.58),pnorm(3.09),pnorm(3.72))
+p<-cbind(p,true_value)
+p<-round(p,digits=3)
+library(knitr)
+library(magrittr)
+library(kableExtra)
+kable(p,booktabs=TRUE,caption='The table of approximation results.')
+  column_spec(1,bold=T)
+```
+
+# Boxplots
+use these codes to draw boxplots
